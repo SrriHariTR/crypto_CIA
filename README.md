@@ -95,3 +95,6 @@ A → 17 ^ 65 = 80
 
 ---
 
+### OUTPUT
+<img width="370" height="526" alt="image" src="https://github.com/user-attachments/assets/b2ed2cdc-eba8-40f1-bbbf-ad42edfab709" />
+
