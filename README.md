@@ -1,4 +1,4 @@
-# 23011102101_Srri Hari T R -- Cryptography Concepts -- CIA
+# 23011102101_Srri Hari T R -- CS3002 Cryptography Concepts -- CIA
 
 # Affine Cipher + XOR Hash
 
