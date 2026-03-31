@@ -64,9 +64,11 @@ int main()
     // Step 2: Generate hash of encrypted text
     int hashValue = xorHash(cipher);
 
-    // Display results
-    cout << "Cipher Text: " << cipher << endl;
-    cout << "XOR Hash: " << hashValue << endl;
+    cout << "\n----- RESULT -----\n";
+    cout << "Input Text  : " << text << endl;
+    cout << "Cipher Text : " << cipher << endl;
+    cout << "XOR Hash    : " << hashValue << endl;
+    cout << "------------------\n";
 
     return 0;
 }
