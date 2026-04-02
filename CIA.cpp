@@ -3,72 +3,112 @@
 using namespace std;
 
 // Affine Encryption Function
-// This function converts plaintext into cipher text using the formula:
-// E(x) = (a*x + b) mod 26
 string affineEncrypt(string s, int a, int b)
 {
-    string result = ""; // stores the encrypted text
+    string result = "";
 
-    // Loop through each character in the input string
     for (char c : s)
     {
-        // Check if the character is an alphabet
         if (isalpha(c))
         {
-            // Determine base ('A' for uppercase, 'a' for lowercase)
             char base = isupper(c) ? 'A' : 'a';
-
-            // Convert character to number (A=0, B=1, ..., Z=25)
             int x = c - base;
-
-            // Apply affine formula and convert back to character
             char enc = ((a * x + b) % 26) + base;
-
-            // Add encrypted character to result
             result += enc;
         }
     }
-    return result; // return final encrypted string
+    return result;
 }
 
 // XOR Hash Function
-// This function generates a hash value using XOR operation
 int xorHash(string s)
 {
-    int H = 0; // initialize hash value
+    int H = 0;
 
-    // Loop through each character in the string
     for (char c : s)
     {
-        // XOR current hash with ASCII value of character
         H = H ^ (int)c;
     }
 
-    return H; // return final hash value
+    return H;
+}
+
+// Function to find modular inverse of a under mod m
+int modInverse(int a, int m)
+{
+    for (int x = 1; x < m; x++)
+    {
+        if ((a * x) % m == 1)
+            return x;
+    }
+    return -1;
+}
+
+// Affine Decryption Function
+string affineDecrypt(string s, int a, int b)
+{
+    string result = "";
+
+    int a_inv = modInverse(a, 26);
+
+    for (char c : s)
+    {
+        if (isalpha(c))
+        {
+            char base = isupper(c) ? 'A' : 'a';
+            int x = c - base;
+
+            int dec = (a_inv * (x - b + 26)) % 26;
+            result += (dec + base);
+        }
+    }
+    return result;
 }
 
 int main()
 {
     string text;
 
-    // Take input from user
     cout << "Enter text: ";
     cin >> text;
 
-    // Keys for affine cipher
     int a = 5, b = 8;
 
-    // Step 1: Encrypt the input text
+    // Step 1: Encrypt
     string cipher = affineEncrypt(text, a, b);
 
-    // Step 2: Generate hash of encrypted text
-    int hashValue = xorHash(cipher);
+    // Step 2: Generate hash of cipher
+    int originalHash = xorHash(cipher);
 
-    cout << "\n----- RESULT -----\n";
-    cout << "Input Text  : " << text << endl;
-    cout << "Cipher Text : " << cipher << endl;
-    cout << "XOR Hash    : " << hashValue << endl;
-    cout << "------------------\n";
+    cout << "\n--- TRANSMISSION ---\n";
+    cout << "Cipher Sent : " << cipher << endl;
+    cout << "Hash Sent   : " << originalHash << endl;
+
+    // Simulate receiving side
+    string receivedCipher = cipher;
+    int receivedHash = originalHash;
+
+    // Step 3: Verify hash before decryption
+    int computedHash = xorHash(receivedCipher);
+
+    cout << "\n--- VERIFICATION ---\n";
+    cout << "Computed Hash : " << computedHash << endl;
+
+    if (computedHash != receivedHash)
+    {
+        cout << "Data Tampered! Do NOT decrypt.\n";
+        return 0;
+    }
+
+    cout << "Data Safe. Proceeding to decryption...\n";
+
+    // Step 4: Decrypt
+    string decrypted = affineDecrypt(receivedCipher, a, b);
+
+    cout << "\n--- FINAL RESULT ---\n";
+    cout << "Input Text     : " << text << endl;
+    cout << "Cipher Text    : " << cipher << endl;
+    cout << "Decrypted Text : " << decrypted << endl;
 
     return 0;
 }
