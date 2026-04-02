@@ -1,100 +1,64 @@
-# 23011102101_Srri Hari T R -- CS3002 Cryptography Concepts -- CIA
+# Affine Cipher with XOR Hash Verification (C++)
 
-# Affine Cipher + XOR Hash
-
-This project performs two main operations:
-
-1. **Encrypts input text using the Affine Cipher**
-2. **Generates a hash of the encrypted text using XOR**
-
-This ensures:
-
-* The message is **securely encrypted**
-* A **hash value** is generated for verification
+This project demonstrates a simple secure communication system using the Affine Cipher for encryption/decryption and an XOR-based hash for integrity verification.
 
 ---
 
-## Overall Flow
+## Description
 
-```
-Input → Affine Encryption → Cipher Text → XOR Hash → Final Output
-```
+The program performs the following operations:
 
----
-
-## Affine Cipher
-
-The Affine Cipher is a substitution cipher defined as:
-
-```
-E(x) = (a × x + b) mod 26
-```
-
-### Where:
-
-* `x` = position of the letter (A = 0, B = 1, ..., Z = 25)
-* `a`, `b` = keys
+1. Encrypts user input using the Affine Cipher  
+2. Generates a hash value from the encrypted text  
+3. Simulates transmission of cipher and hash  
+4. Verifies the integrity of the received data  
+5. Decrypts the cipher text only if the hash matches  
 
 ---
 
-## Example
+## Algorithm
 
-### Input:
+1. Start  
+2. Read input text  
+3. Set keys: a = 5, b = 8  
+4. Encrypt text using:
+   E(x) = (a * x + b) mod 26  
+5. Generate XOR hash of cipher text  
+6. Simulate sending cipher and hash  
+7. Recompute hash at receiver side  
+8. Compare hashes  
+   - If not equal → Stop (data tampered)  
+   - If equal → Proceed  
+9. Decrypt using:
+   D(x) = a⁻¹ * (x - b) mod 26  
+10. Display results  
+11. Stop  
 
-```
-HELLO
-```
 
-### Encryption Steps:
+## Compilation
 
-* H → 7 → (5×7 + 8) mod 26 = 17 → R
-* E → 4 → (5×4 + 8) mod 26 = 2 → C
+```bash
 
-Final Output:
+## Example Run
 
-```
-RCLLA
-```
 
----
+Enter text: HELLO
 
-## XOR Hash Function
+--- TRANSMISSION ---
+Cipher Sent : RCLLA
+Hash Sent   : 82
 
-### How it works:
+--- VERIFICATION ---
+Computed Hash : 82
+Data Safe. Proceeding to decryption...
 
-1. Initialize:
-
-```
-H = 0
-```
-
-2. For each character:
-
-```
-H = H ^ ASCII(character)
-```
-
----
-
-## Example (RCLLA)
-
-```
-H = 0
-R → 0 ^ 82 = 82  
-C → 82 ^ 67 = 17  
-L → 17 ^ 76 = 93  
-L → 93 ^ 76 = 17  
-A → 17 ^ 65 = 80  
-```
-
-### Final Hash Value:
+--- FINAL RESULT ---
+Input Text     : HELLO
+Cipher Text    : RCLLA
+Decrypted Text : HELLO
 
 ```
-80
-```
 
----
+## Output
 
-### OUTPUT
-<img width="370" height="526" alt="image" src="https://github.com/user-attachments/assets/b2ed2cdc-eba8-40f1-bbbf-ad42edfab709" />
-
+<img width="638" height="737" alt="image" src="https://github.com/user-attachments/assets/3a3070ba-572d-4f63-8463-77fd8cc72f03" />
